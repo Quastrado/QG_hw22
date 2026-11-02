@@ -1,0 +1,18 @@
+{
+  "base": {
+    "project": "QG_hw15",
+    "environment": "qa.guru",
+    "comment": "comment @Quastrado",
+    "reportLink": "",
+    "language": "en",
+    "allureFolder": "allure-report",
+    "enableChart": false
+  },
+  "telegram": {
+    "token": "8552327727:AAEEVcwn9-d7mTOBU3wPa_EFE0kZaVJpvXU",
+    "chat": "-1003768162523",
+    "topic": "",
+    "replyTo": "",
+    "templatePath": "/templates/telegram.ftl"
+  }
+}
