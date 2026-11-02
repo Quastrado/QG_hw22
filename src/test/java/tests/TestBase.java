@@ -5,6 +5,7 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import drivers.BrowserStackDriver;
+import drivers.EmulationDriver;
 import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
@@ -17,11 +18,24 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class TestBase {
 
+    public static String deviceHost = System.getProperty("deviceHost", "emulation");
+
     @BeforeAll
     static void beforeAll() {
-        Configuration.browser = BrowserStackDriver.class.getName();
+
+        // Динамически выбираем провайдер драйвера
+//        if ("browserstack".equalsIgnoreCase(deviceHost)) {
+//            Configuration.browser = BrowserStackDriver.class.getName();
+//        } else if ("emulation".equalsIgnoreCase(deviceHost)) {
+//            Configuration.browser = EmulationDriver.class.getName();
+//        } else if ("real".equalsIgnoreCase(deviceHost)) {
+//            // Сюда в будущем добавим класс для реального устройства
+//            // Configuration.browser = RealDeviceDriver.class.getName();
+//        }
+        Configuration.browser = EmulationDriver.class.getName();
         Configuration.browserSize = null;
         Configuration.timeout = 30000;
+        System.setProperty("selenide.browser", drivers.EmulationDriver.class.getName());
     }
 
     @BeforeEach
@@ -32,21 +46,28 @@ public class TestBase {
 
     @AfterEach
     void addAttachments() {
-        if (WebDriverRunner.hasWebDriverStarted()) {
+        if (WebDriverRunner.hasWebDriverStarted() && Selenide.sessionId() != null) {
             try {
-                // Безопасно получаем sessionId
                 String sessionId = Selenide.sessionId().toString();
 
+                // Снимаем исходный код страницы только если сессия активна
                 Attach.pageSource();
-                // Закрываем драйвер ДО добавления видео, или после — зависит от логики Attach.addVideo
-                closeWebDriver();
-                Attach.addVideo(sessionId);
+
+                // 2. Видео прикрепляем СТРОГО только для BrowserStack!
+                // Локальный эмулятор не умеет отдавать видео по sessionId через API BrowserStack,
+                // из-за чего этот метод локально всегда будет падать с ошибкой 404!
+                if ("browserstack".equalsIgnoreCase(deviceHost)) {
+                    Attach.addVideo(sessionId);
+                }
             } catch (Exception e) {
-                System.err.println("Ошибка при сборе вложений: " + e.getMessage());
-                closeWebDriver(); // На всякий случай закрываем, если он повис
+                System.err.println("Ошибка при сборе Allure-вложений: " + e.getMessage());
+            } finally {
+                // 3. Закрываем драйвер в любом случае, даже если вложения упали
+                closeWebDriver();
             }
         } else {
-            System.out.println("Драйвер не был запущен, пропускаем сбор вложений.");
+            System.out.println("Сессия не была создана. Принудительно очищаем контекст Selenide.");
+            closeWebDriver(); // Очищаем потоки, чтобы не было ошибки "No webdriver is bound" в следующем тесте
         }
     }
 }

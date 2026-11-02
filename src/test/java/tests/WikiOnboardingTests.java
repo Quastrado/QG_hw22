@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static io.qameta.allure.Allure.step;
 import static org.openqa.selenium.By.xpath;
 
-public class WikiOnboardingTests {
+public class WikiOnboardingTests extends TestBase {
 
     private final EmulationConfig config = ConfigFactory.create(
             EmulationConfig.class, System.getProperties());
@@ -38,7 +38,7 @@ public class WikiOnboardingTests {
         });
 
         step("Verify the presence of the search field on the landing page", () -> {
-            $(xpath("//android.widget.TextView[@text='Search Wikipedia']")).shouldBe(visible);
+            $(xpath("//androidx.compose.ui.platform.ComposeView//android.view.View[1]")).shouldBe(visible);
         });
     }
 }

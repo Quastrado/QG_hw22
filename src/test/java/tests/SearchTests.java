@@ -39,3 +39,9 @@ public class SearchTests extends TestBase{
     }
 }
 
+// //android.widget.TextView[@text="All the world's knowledge"] - заголовок 1 экрана
+// //android.widget.Button - кнопка стрелки внизу
+// //android.widget.TextView[@text="Data & Privacy"] - заголовок 2 экрана
+// //android.widget.TextView[@text="Read in more than 300 languages"] - заголовок 3 экрана
+// //android.widget.TextView[@text="Follow your curiosity"] - заголовок 4 экрана
+// //android.widget.TextView[@text='Search Wikipedia']
