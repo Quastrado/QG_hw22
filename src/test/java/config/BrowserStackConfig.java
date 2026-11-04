@@ -15,14 +15,14 @@ public interface BrowserStackConfig extends Config {
     String getKey();
 
     @Key("browserstack.remote.url")
-    @DefaultValue("https://hub.browserstack.com/wd/hub")
+    @DefaultValue("https://hub-cloud.browserstack.com/wd/hub")
     String getRemoteUrl();
 
     @Key("device.name")
     @DefaultValue("Google Pixel 7 Pro")
     String getDevice();
 
-    @Key("os.version")
+    @Key("device.version")
     @DefaultValue("13.0")
     String getVersion();
 
