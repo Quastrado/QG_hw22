@@ -3,7 +3,7 @@ package config;
 import org.aeonbits.owner.Config;
 
 @Config.Sources({
-        "classpath:config/android.properties" // путь к файлу с настройками в src/test/resources
+        "classpath:config/browserstack.properties" // путь к файлу с настройками в src/test/resources
 })
 
 public interface EmulationConfig extends Config {
@@ -29,7 +29,7 @@ public interface EmulationConfig extends Config {
     String appActivity();
 
     @Key("appium.url")
-    @DefaultValue("http://127.0.0.1:4723")
+    @DefaultValue("http://127.0.0.1:4723/wd/hub")
     String appiumUrl();
 
 }

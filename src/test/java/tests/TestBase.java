@@ -6,11 +6,14 @@ import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import drivers.BrowserStackDriver;
 import drivers.EmulationDriver;
+import drivers.RealDeviceDriver;
 import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+
+import java.io.IOException;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
@@ -18,24 +21,23 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class TestBase {
 
-    public static String deviceHost = System.getProperty("deviceHost", "emulation");
+    public static String deviceHost = System.getProperty("deviceHost", "browserstack");
 
     @BeforeAll
     static void beforeAll() {
-
         // Динамически выбираем провайдер драйвера
-//        if ("browserstack".equalsIgnoreCase(deviceHost)) {
-//            Configuration.browser = BrowserStackDriver.class.getName();
-//        } else if ("emulation".equalsIgnoreCase(deviceHost)) {
-//            Configuration.browser = EmulationDriver.class.getName();
-//        } else if ("real".equalsIgnoreCase(deviceHost)) {
-//            // Сюда в будущем добавим класс для реального устройства
-//            // Configuration.browser = RealDeviceDriver.class.getName();
-//        }
-        Configuration.browser = EmulationDriver.class.getName();
+        if ("browserstack".equalsIgnoreCase(deviceHost)) {
+            Configuration.browser = BrowserStackDriver.class.getName();
+            System.setProperty("selenide.browser", drivers.BrowserStackDriver.class.getName());
+        } else if ("emulation".equalsIgnoreCase(deviceHost)) {
+            Configuration.browser = EmulationDriver.class.getName();
+            System.setProperty("selenide.browser", drivers.EmulationDriver.class.getName());
+        } else if ("real".equalsIgnoreCase(deviceHost)) {
+            Configuration.browser = RealDeviceDriver.class.getName();
+            System.setProperty("selenide.browser", drivers.RealDeviceDriver.class.getName());
+        }
         Configuration.browserSize = null;
         Configuration.timeout = 30000;
-        System.setProperty("selenide.browser", drivers.EmulationDriver.class.getName());
     }
 
     @BeforeEach
