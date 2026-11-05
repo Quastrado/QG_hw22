@@ -20,6 +20,14 @@ public interface EmulationConfig extends Config {
     @DefaultValue("emulator-5554")
     String deviceName();
 
+    @Key("app.url")
+    @DefaultValue("https://github.com/wikimedia/apps-android-wikipedia")
+    String appUrl();
+
+    @Key("app.name")
+    @DefaultValue("app-alpha-universal-release.apk")
+    String appName();
+
     @Key("app.package")
     @DefaultValue("org.wikipedia.alpha")
     String appPackage();

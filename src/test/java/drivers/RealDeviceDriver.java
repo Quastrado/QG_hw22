@@ -5,9 +5,13 @@ import config.RealDeviceConfig;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import org.aeonbits.owner.ConfigFactory;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -35,6 +39,7 @@ public class RealDeviceDriver implements WebDriverProvider {
                 .setAppPackage(config.appPackage())
                 .setAppActivity(config.appActivity())
 //                .setApp(config.appPath()) // Путь к APK, чтобы Appium сам устанавливал его на телефон
+                .setApp(getAppPath())
                 .setAppWaitActivity("*")  // Маска для ожидания любого экрана при старте
                 .setNoReset(true)
                 .setCapability("appium:dontStopAppOnReset", true);
@@ -45,6 +50,24 @@ public class RealDeviceDriver implements WebDriverProvider {
             System.err.println("!!! КРИТИЧЕСКАЯ ОШИБКА СОЗДАНИЯ ДРАЙВЕРА РЕАЛЬНОГО УСТРОЙСТВА !!!");
             throw new RuntimeException(e);
         }
+    }
+
+    private String getAppPath() {
+        String appUrl = config.appUrl();
+        String appName = config.appName();
+        String localFolder = "src/test/resources/apps/";
+
+        File app = new File(localFolder + appName);
+
+        if (!app.exists()) {
+            try (InputStream in = new URL(appUrl).openStream()) {
+                FileUtils.copyInputStreamToFile(in, app);
+                System.out.println("=== APK успешно скачан в: " + app.getAbsolutePath() + " ===");
+            } catch (IOException e) {
+                throw new AssertionError("Не удалось скачать APK-файл по ссылке: " + appUrl, e);
+            }
+        }
+        return app.getAbsolutePath();
     }
 
 }
