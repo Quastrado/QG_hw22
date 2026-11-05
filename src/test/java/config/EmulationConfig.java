@@ -35,7 +35,7 @@ public interface EmulationConfig extends Config {
     String appPackage();
 
     @Key("app.activity")
-    @DefaultValue("org.wikipedia.onboarding.InitialOnboardingActivity")
+    @DefaultValue("org.wikipedia.main.MainActivity")
     String appActivity();
 
     @Key("appium.url")

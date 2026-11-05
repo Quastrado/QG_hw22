@@ -28,6 +28,7 @@ public class EmulationDriver implements WebDriverProvider {
                 .setAutomationName(config.automationName())
                 .setDeviceName(config.deviceName())
                 .setAppPackage(config.appPackage())
+                .setAppActivity(config.appActivity())
                 .setApp(getAppPath())
                 .setAppWaitActivity("*") // Передали маску напрямую текстом
                 .setNoReset(false)       // Передали boolean напрямую

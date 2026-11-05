@@ -31,6 +31,7 @@ public interface RealDeviceConfig extends Config {
     String appPackage();
 
     @Key("app.activity")
+    @DefaultValue("org.wikipedia.main.MainActivity")
     String appActivity();
 
     @Key("appium.url")
