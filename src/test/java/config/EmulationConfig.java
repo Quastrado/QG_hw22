@@ -21,7 +21,9 @@ public interface EmulationConfig extends Config {
     String deviceName();
 
     @Key("app.url")
-    @DefaultValue("https://github.com/wikimedia/apps-android-wikipedia")
+    @DefaultValue(
+            "https://github.com/wikimedia/apps-android-wikipedia/releases/download/latest/app-alpha-universal-release.apk"
+    )
     String appUrl();
 
     @Key("app.name")

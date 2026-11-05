@@ -18,7 +18,9 @@ public interface RealDeviceConfig extends Config {
     String deviceName();
 
     @Key("app.url")
-    @DefaultValue("https://github.com/wikimedia/apps-android-wikipedia")
+    @DefaultValue(
+            "https://github.com/wikimedia/apps-android-wikipedia/releases/download/latest/app-alpha-universal-release.apk"
+    )
     String appUrl();
 
     @Key("app.name")
@@ -35,6 +37,4 @@ public interface RealDeviceConfig extends Config {
     @DefaultValue("http://127.0.0.1:4723/wd/hub")
     String appiumUrl();
 
-    @Key("app.path")
-    String appPath();
 }
