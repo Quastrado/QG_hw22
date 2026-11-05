@@ -3,7 +3,7 @@ package config;
 import org.aeonbits.owner.Config;
 
 @Config.Sources({
-        "classpath:config/browserstack.properties" // путь к файлу с настройками в src/test/resources
+        "classpath:config/emulation.properties" // путь к файлу с настройками в src/test/resources
 })
 
 public interface EmulationConfig extends Config {
